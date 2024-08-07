@@ -10,6 +10,7 @@ import MessageLog from './MessageLog';
 import SideBar from './components/SideBar/SideBar/SideBar';
 import UserList from './components/dm-list/dm-list';
 import ChannelList from './components/ChannelList/ChannelList';
+import DefaultDisplay from "./components/message-column/DefaultDisplay";
 
 export default function Home() {
   const [selectedServerId, setSelectedServerId] = useState<string | null>(null);
@@ -17,7 +18,16 @@ export default function Home() {
   const [selectedChannelId, setSelectedChannelId] = useState<string | null>(null);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [selectedUserName, setSelectedUserName] = useState<string>(''); // For storing the user's name
+  const [showDefaultDisplay, setShowDefaultDisplay] = useState(false); // State for DefaultDisplay
   const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    if (!selectedServerId) {
+      setShowDefaultDisplay(true);
+    } else {
+      setShowDefaultDisplay(false);
+    }
+  }, [selectedServerId]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -38,7 +48,11 @@ export default function Home() {
 
           {/* Side Channels Container */}
           <div className="side-channels-container">
-            <SideBar onSelectServer={setSelectedServerId} />
+            <SideBar 
+                onSelectServer={(serverId) => {
+                setSelectedServerId(serverId);
+                setShowDefaultDisplay(false); // Hide DefaultDisplay when a server is selected
+              }} />
           </div>
 
           {/* Direct Messages Container */}
@@ -66,6 +80,8 @@ export default function Home() {
             )}
             <UserProfileFooter user={user} />
           </div>
+
+          {/* Message Log Container */}
           <div className="message-log-container">
             {selectedUserId ? (
               <MessageLog userId={selectedUserId} channelName="" channelId={null} userName={selectedUserName} />
