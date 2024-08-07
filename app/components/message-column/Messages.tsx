@@ -111,11 +111,11 @@ const ExistingUserMessages = ({ img, name, messages }: Props) => {
               <Image
                 src={img || "https://cdn4.iconfinder.com/data/icons/office-thick-outline/36/office-14-256.png"}
                 quality={100}
-                width={45}
-                height={45}
+                width={43}
+                height={43}
                 style={{
-                  maxWidth: "45px",
-                  maxHeight: "45px",
+                  maxWidth: "43px",
+                  maxHeight: "43px",
                   borderRadius: "75%",
                 }}
                 alt="prof-pic"
