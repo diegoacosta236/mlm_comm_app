@@ -33,14 +33,33 @@ export async function DELETE(req: NextRequest) {
       },
     });
 
-    // Check's if the user is not a member or if their role is not ADMIN
     if (!member || member.role !== 'ADMIN') {
       console.error('User is not an admin of this server');
       return NextResponse.json({ error: 'You are not authorized to delete this server' }, { status: 403 });
     }
 
-    await prisma.server.delete({
-      where: { id: serverId },
+    // Start a transaction to ensure all deletions happen atomically
+    await prisma.$transaction(async (prisma) => {
+      // Delete all messages associated with the server's channels
+      await prisma.message.deleteMany({
+        where: {
+          channel: {
+            serverId: serverId,
+          },
+        },
+      });
+
+      // Delete all channels associated with the server
+      await prisma.channel.deleteMany({
+        where: {
+          serverId: serverId,
+        },
+      });
+
+      // Finally, delete the server
+      await prisma.server.delete({
+        where: { id: serverId },
+      });
     });
 
     return NextResponse.json({ message: 'Server deleted.' }, { status: 200 });

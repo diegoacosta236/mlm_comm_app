@@ -18,12 +18,19 @@ export async function DELETE(req: NextRequest) {
       );
     }
 
+    // Delete messages associated with the channel first
+    await prisma.message.deleteMany({
+      where: { channelId: channelId },
+    });
+
+    // Then delete the channel
     await prisma.channel.delete({
       where: { id: channelId },
     });
 
-    return NextResponse.json({ success: "Channel deleted" }, { status: 200 });
+    return NextResponse.json({ success: "Channel and its messages deleted" }, { status: 200 });
   } catch (error) {
+    console.error("Error deleting channel:", error);
     return NextResponse.json(
       { error: "Error deleting channel" },
       { status: 500 }

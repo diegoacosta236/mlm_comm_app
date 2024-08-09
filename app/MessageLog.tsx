@@ -81,6 +81,7 @@ const MessageLog = ({ channelName, channelId, userId, userName }: MessageLogProp
           setSelectedUserId(userId);
           setSelectedUserName(userName);
           setSelectedChannelId(null);
+          scrollToBottom();
 
           const response = await axios.get(`/api/directMessages/${userId}`);
           const messages = response.data;
@@ -311,7 +312,7 @@ const MessageLog = ({ channelName, channelId, userId, userName }: MessageLogProp
             channelId={selectedChannelId}
           />
           <div className="flex flex-col justify-between h-full">
-            <div className="overflow-auto flex-grow h-[500px] max-h-screen">
+            <div className="overflow-auto flex-grow h-[490px] max-h-screen">
               {organizedMessages.map((message, index) =>
                 "date" in message ? (
                   <div key={index} className="relative text-center my-2 text-lime-500">

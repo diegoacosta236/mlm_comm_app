@@ -25,7 +25,7 @@ export default function UserProfileFooter({ user }: UserProfileFooterProps) {
   };
 
   return (
-    <div className="absolute bottom-0 w-full flex items-center border-t-2 border-gray-400/opacity-25 space-x-2 p-1">
+    <div className="absolute bottom-0 w-[360px] flex items-center border-t-2 border-gray-400/opacity-25 space-x-2 p-1">
       <Image
         src={
           user.image ||
@@ -34,7 +34,7 @@ export default function UserProfileFooter({ user }: UserProfileFooterProps) {
         alt="User Image"
         width={45}
         height={45}
-        className="w-[45px] h-[45px] rounded-full object-cover ml-2"
+        className="w-[45px] h-[45px] rounded-full object-cover ml-4"
       />
       <p 
         className="text-2xl font-semibold cursor-pointer" 

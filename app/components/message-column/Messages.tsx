@@ -24,37 +24,29 @@ const ExistingUserMessages = ({ img, name, messages }: Props) => {
   const [messageList, setMessageList] = useState<Message[]>(messages);
 
   const deleteMessage = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, messageId: string) => {
-    const deleteThisMessage = event.currentTarget.closest('.text-message');
-    const deleteUserData = event.currentTarget.closest('.userinfo-message-container');
+    try {
+      // Remove the message from the state first
+      setMessageList((prevMessages) =>
+        prevMessages.filter((message) => message.id !== messageId)
+      );
   
-    if (deleteThisMessage) {
-      try {
-        const response = await fetch('/api/directMessages', {
-          method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: messageId }),
-        });
+      // Make the delete request to the backend
+      const response = await fetch('/api/directMessages', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: messageId }),
+      });
   
-        if (response.ok) {
-          if (deleteThisMessage && deleteThisMessage.parentNode) {
-            deleteThisMessage.remove();
-          }
-  
-          // Check if the container has any more messages
-          if (deleteUserData && deleteUserData.querySelectorAll('.text-message').length === 0) {
-            deleteUserData.remove();
-          }
-  
-          console.log(`Successfully deleted message with ID: ${messageId}`);
-        } else {
-          const errorData = await response.json();
-          console.error(`Failed to delete message with ID: ${messageId}`, errorData);
-        }
-      } catch (error) {
-        console.error(`Can't delete message with ID: ${messageId}`, error);
+      if (response.ok) {
+        console.log(`Successfully deleted message with ID: ${messageId}`);
+      } else {
+        const errorData = await response.json();
+        console.error(`Failed to delete message with ID: ${messageId}`, errorData);
+        // Optionally, you could re-add the message back to the state here if needed
       }
-    } else {
-      console.error('Failed to find the message element for deletion');
+    } catch (error) {
+      console.error(`Can't delete message with ID: ${messageId}`, error);
+      // Optionally, you could re-add the message back to the state here if needed
     }
   };
 

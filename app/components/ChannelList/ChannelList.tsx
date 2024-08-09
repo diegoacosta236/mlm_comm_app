@@ -186,6 +186,7 @@ const ChannelList = ({ serverId, onChannelSelect }: ChannelListProps) => {
         );
         setPopupVisible(false);
         setSelectedChannel(null);
+        onChannelSelect("", "");
       } catch (error) {
         console.error("Error deleting channel:", error);
       }

@@ -25,9 +25,10 @@ interface Server {
 
 interface SideBarProps {
   onSelectServer: (serverId: string) => void;
+  onRemoveServer: () => void;
 }
 
-const SideBar: React.FC<SideBarProps> = ({ onSelectServer }) => {
+const SideBar: React.FC<SideBarProps> = ({ onSelectServer, onRemoveServer }) => {
   const [servers, setServers] = useState<Server[]>([]);
   const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 });
   const [popupVisible, setPopupVisible] = useState(false);
@@ -187,6 +188,7 @@ const SideBar: React.FC<SideBarProps> = ({ onSelectServer }) => {
         setPopupVisible(false);
         setSelectedServer(null);
         onSelectServer(""); // this makes it so that the Direct Messages are shown IMMEDIATELY and channel list disappears
+        onRemoveServer();
       } else {
         const errorData = await response.json();
         console.error("Failed to leave server:", errorData);
@@ -246,6 +248,7 @@ const SideBar: React.FC<SideBarProps> = ({ onSelectServer }) => {
         setPopupVisible(false);
         setSelectedServer(null);
         onSelectServer(""); // this makes it so that the Direct Messages are shown IMMEDIATELY and channel list disappears
+        onRemoveServer();
       } else {
         const errorData = await response.json();
         console.error("Failed to delete server:", errorData);
