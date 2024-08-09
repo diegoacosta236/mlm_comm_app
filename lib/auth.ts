@@ -1,8 +1,6 @@
-import { NextApiRequest } from 'next';
-import { getSession } from 'next-auth/react'
+import { getSession } from "next-auth/react";
 
-export async function getCurrentUser(req: NextApiRequest) {
-  const session = await getSession({ req });
+export async function getCurrentUser() {
+  const session = await getSession();
   return session?.user ?? null;
-  
 }

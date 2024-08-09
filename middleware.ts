@@ -3,8 +3,6 @@ import authConfig from "./auth.config";
 import { NextRequest } from "next/server";
 const { auth } = NextAuth(authConfig);
 
-//https://www.fjobeir.com/using-nextauthrequest-in-nextjs-middleware/
-
 import {
   DEFAULT_LOGIN_REDIRECT,
   apiAuthPrefix,

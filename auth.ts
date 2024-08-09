@@ -15,15 +15,6 @@ declare module "next-auth" {
   }
 }
 
-// import { JWT } from "next-auth/jwt";
-// declare module "next-auth/jwt" {
-//   interface JWT {
-//     role?: "ADMIN" | "USER";
-//   }
-// }
-
-// https://next-auth.js.org/v3/configuration/callbackshttps://next-auth.js.org/v3/configuration/callbacks
-
 export const {
   handlers: { GET, POST },
   auth,
@@ -44,9 +35,6 @@ export const {
   },
   callbacks: {
     async session({ token, session }) {
-      // console.log({
-      //   sessionToken: token,
-      // });
 
       if (token.sub && session.user) {
         session.user.id = token.sub;
