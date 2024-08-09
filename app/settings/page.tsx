@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import ImageUpload from "../upload/page";
+import ImageUpload from "../components/ImageUpload"; // Correct relative path
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { TfiHome } from "react-icons/tfi";
 import SectionHeading from "./_components/SectionHeading";
@@ -10,8 +10,8 @@ import SettingInputField from "./_components/SettingInputField";
 import Image from "next/image";
 
 const AccountSettings: React.FC = () => {
-  const [settingsData, setSettingsData] = useState<any>(null); // State variable to store settings data
-  const [originalData, setOriginalData] = useState<any>(null); // To store original data
+  const [settingsData, setSettingsData] = useState<any>(null);
+  const [originalData, setOriginalData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showImageUpload, setShowImageUpload] = useState(false);
 
@@ -20,7 +20,6 @@ const AccountSettings: React.FC = () => {
       const response = await axios.get("/api/settings");
       console.log("Fetched settings data:", response.data);
 
-      // Ensure createdAt is a valid date
       const createdAt = new Date(response.data.createdAt);
       const isValidDate = !isNaN(createdAt.getTime());
 
@@ -64,7 +63,7 @@ const AccountSettings: React.FC = () => {
     try {
       await axios.put("/api/settings", settingsData);
       console.log("Settings data updated successfully");
-      setOriginalData(settingsData);
+      setOriginalData(settingsData); // Update original data to match current settings
     } catch (error) {
       console.error("Error saving settings data:", error);
     }
@@ -98,7 +97,11 @@ const AccountSettings: React.FC = () => {
     JSON.stringify(settingsData) !== JSON.stringify(originalData);
 
   if (isLoading) {
-    return <div className="font-bold text-4xl flex justify-center mt-20">Loading...</div>;
+    return (
+      <div className="font-bold text-4xl flex justify-center mt-20">
+        Loading...
+      </div>
+    );
   }
 
   return (
@@ -144,7 +147,7 @@ const AccountSettings: React.FC = () => {
                 >
                   <div className="bg-white p-4 rounded-lg shadow-lg">
                     <ImageUpload
-                      userId={settingsData?.id} // Ensure the correct userId is passed
+                      userId={settingsData?.id}
                       onClose={() => setShowImageUpload(false)}
                       onUpload={handleImageUpload}
                     />
